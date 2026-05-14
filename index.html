@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#e879a9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>เช็คของก่อนไปโรงเรียน</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --pink-50: #fff5fb;
+  --pink-100: #ffe4f3;
+  --pink-200: #ffc9e8;
+  --pink-300: #ffa3d4;
+  --pink-400: #ff7eb8;
+  --pink-500: #ff5aa5;
+  --pink-600: #e8489a;
+  --pink-700: #c2186e;
+  --lilac: #e9deff;
+  --lilac-deep: #9b7fd8;
+  --mint: #c8f7e9;
+  --text: #5c1a4a;
+  --text-muted: #a0568a;
+  --card: rgba(255, 255, 255, 0.94);
+  --shadow: 0 10px 36px rgba(232, 72, 154, 0.18);
+  --radius: 22px;
+  --radius-sm: 16px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font: "Kanit", "Sarabun", system-ui, sans-serif;
+  --thumb: 76px;
+  --thumb-lg: 92px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  background-color: #ffd6ec;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -20%, #fff9fc 0%, transparent 55%),
+    radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.55) 0%, transparent 35%),
+    radial-gradient(circle at 92% 75%, var(--lilac) 0%, transparent 32%),
+    radial-gradient(circle at 80% 15%, rgba(255, 182, 220, 0.9) 0%, transparent 28%),
+    linear-gradient(168deg, #fff0fb 0%, #ffd6ec 40%, #ffc2e8 72%, #e8d4ff 100%);
+  background-attachment: fixed;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 1rem calc(1rem + var(--safe-bottom));
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  padding: 0.85rem 0 1rem;
+  position: relative;
+}
+
+.header::after {
+  content: "✨ 🎀 ✨";
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  opacity: 0.9;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.45rem, 4.5vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.15;
+  background: linear-gradient(115deg, var(--pink-600), #ff1493, var(--lilac-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 1.02rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.day-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 0.75rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.day-tab {
+  flex: 1 0 auto;
+  min-width: 4.5rem;
+  padding: 0.7rem 0.9rem;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 0 rgba(232, 72, 154, 0.12);
+}
+
+.day-tab:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.day-tab.is-active {
+  color: #fff;
+  border-color: #fff;
+  background: linear-gradient(145deg, #ff7eb8 0%, var(--pink-500) 45%, var(--pink-600) 100%);
+  box-shadow: 0 6px 0 rgba(194, 24, 110, 0.35), 0 8px 24px rgba(255, 90, 165, 0.45);
+  transform: translateY(-2px);
+}
+
+.main {
+  flex: 1;
+}
+
+.panel {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding: 1rem 1.1rem 1.25rem;
+  backdrop-filter: blur(10px);
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--pink-700);
+}
+
+.panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(145deg, #ff8cc8, var(--pink-500) 50%, var(--pink-600));
+  box-shadow: 0 4px 0 rgba(194, 24, 110, 0.35), 0 6px 18px rgba(255, 90, 165, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 0 rgba(194, 24, 110, 0.4), 0 8px 24px rgba(255, 90, 165, 0.5);
+}
+
+.btn-ghost {
+  color: var(--pink-700);
+  background: var(--mint);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+.btn-ghost:hover {
+  background: #b8f5e3;
+}
+
+.btn-small {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.progress-block {
+  margin-bottom: 1.1rem;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.45rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.progress-pct {
+  font-variant-numeric: tabular-nums;
+  color: var(--pink-600);
+}
+
+.progress-track {
+  height: 18px;
+  border-radius: 999px;
+  background: var(--lilac);
+  border: 3px solid #fff;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(155, 127, 216, 0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffb8e0, var(--pink-500), #c4a6ff);
+  transition: width 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  box-shadow: 0 0 12px rgba(255, 120, 200, 0.6);
+}
+
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.check-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.75rem 0.7rem 0.55rem;
+  background: linear-gradient(145deg, #fff 0%, var(--pink-50) 55%, #fff8fc 100%);
+  border-radius: var(--radius-sm);
+  border: 3px solid var(--pink-200);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.check-item.is-done {
+  border-color: #ffb8e0;
+  background: linear-gradient(145deg, #fff 0%, var(--mint) 100%);
+  box-shadow: 0 4px 16px rgba(255, 140, 200, 0.25);
+}
+
+.check-tap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  min-height: 3.25rem;
+}
+
+.check-input {
+  width: 1.65rem;
+  height: 1.65rem;
+  accent-color: var(--pink-600);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.thumb-wrap {
+  flex-shrink: 0;
+  padding: 3px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff, var(--lilac));
+  border: 3px solid #fff;
+  box-shadow: 0 3px 10px rgba(155, 127, 216, 0.2);
+}
+
+.check-item-thumb {
+  width: var(--thumb);
+  height: var(--thumb);
+  border-radius: 14px;
+  object-fit: cover;
+  display: block;
+  background: var(--pink-100);
+}
+
+.check-item-thumb.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.15rem;
+  line-height: 1;
+  opacity: 0.88;
+}
+
+.check-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.check-text-label {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0.25rem 0;
+}
+
+.check-text {
+  font-weight: 700;
+  font-size: 1.12rem;
+  line-height: 1.25;
+  word-break: break-word;
+  display: block;
+}
+
+.check-text.is-checked {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  opacity: 0.72;
+  color: var(--text-muted);
+}
+
+.check-actions {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.footer {
+  text-align: center;
+  padding: 0.75rem 0 0;
+}
+
+.saved-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.saved-hint.is-pulse {
+  animation: pulse 0.6s ease;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+    color: var(--pink-600);
+  }
+  100% {
+    opacity: 0.85;
+  }
+}
+
+.modal[hidden] {
+  display: none !important;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+  padding-bottom: max(1rem, var(--safe-bottom));
+}
+
+@media (min-width: 540px) {
+  .modal {
+    align-items: center;
+  }
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(74, 4, 78, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(180deg, #fff 0%, var(--pink-50) 100%);
+  border-radius: var(--radius);
+  border: 4px solid #fff;
+  padding: 1.35rem;
+  box-shadow: 0 24px 64px rgba(194, 24, 110, 0.28);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--pink-700);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.field input[type="text"] {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--pink-200);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.field input[type="text"]:focus {
+  border-color: var(--pink-500);
+}
+
+.field input[type="file"] {
+  font-size: 0.85rem;
+}
+
+.modal-preview {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.modal-preview img {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: var(--radius-sm);
+  border: 3px solid #fff;
+  box-shadow: 0 4px 16px rgba(232, 72, 154, 0.2);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 360px) {
+  .check-body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+  }
+
+  .check-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 768px) {
+  .app {
+    max-width: 820px;
+    padding-top: 1.5rem;
+  }
+
+  .day-tab {
+    min-width: 5.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1.05rem;
+  }
+
+  .panel {
+    padding: 1.35rem 1.5rem 1.5rem;
+  }
+
+  :root {
+    --thumb: var(--thumb-lg);
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="title">เช็คของก่อนไปโรงเรียน</h1>
+      <p class="subtitle">เลือกวันที่เรียน แล้วติ๊กของที่หนูเตรียมพร้อมแล้วนะ — เก็บอัตโนมัติเลย</p>
+    </header>
+
+    <nav class="day-tabs" role="tablist" aria-label="เลือกวัน">
+      <button type="button" class="day-tab is-active" data-day="0" role="tab" aria-selected="true">จันทร์</button>
+      <button type="button" class="day-tab" data-day="1" role="tab" aria-selected="false">อังคาร</button>
+      <button type="button" class="day-tab" data-day="2" role="tab" aria-selected="false">พุธ</button>
+      <button type="button" class="day-tab" data-day="3" role="tab" aria-selected="false">พฤหัส</button>
+      <button type="button" class="day-tab" data-day="4" role="tab" aria-selected="false">ศุกร์</button>
+    </nav>
+
+    <main class="main">
+      <section class="panel" aria-live="polite">
+        <div class="panel-head">
+          <h2 class="panel-title" id="panelDayTitle">จันทร์</h2>
+          <div class="panel-actions">
+            <button type="button" class="btn btn-ghost" id="btnReset">Reset</button>
+            <button type="button" class="btn btn-primary" id="btnAdd">+ เพิ่มรายการ</button>
+          </div>
+        </div>
+
+        <div class="progress-block">
+          <div class="progress-label">
+            <span id="progressText">ยังไม่มีรายการ</span>
+            <span class="progress-pct" id="progressPct">0%</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar" aria-labelledby="progressText">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <ul class="checklist" id="checklist"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="saved-hint" id="saveHint">บันทึกแล้ว</span>
+    </footer>
+  </div>
+
+  <div class="modal" id="itemModal" hidden aria-modal="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card">
+      <h3 class="modal-title" id="modalTitle">เพิ่มรายการ</h3>
+      <label class="field">
+        <span>ชื่อรายการ</span>
+        <input type="text" id="modalText" maxlength="120" placeholder="เช่น เงิน" autocomplete="off" />
+      </label>
+      <label class="field">
+        <span>รูปภาพ (ไม่บังคับ)</span>
+        <input type="file" id="modalImage" accept="image/*" />
+      </label>
+      <div class="modal-preview" id="modalPreview" hidden>
+        <img alt="" id="modalPreviewImg" />
+        <button type="button" class="btn btn-small btn-ghost" id="btnRemoveImage">ลบรูป</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" data-close-modal>ยกเลิก</button>
+        <button type="button" class="btn btn-primary" id="modalSave">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "schoolChecklistTh_v1";
+  const SAVE_DEBOUNCE_MS = 350;
+
+  const DAY_LABELS = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์"];
+
+  const BASE_ITEMS = [
+    "เงิน",
+    "แมส",
+    "น้ำ",
+    "ขนม",
+    "ดินสอ",
+    "สี",
+    "หนังสือ",
+    "ขวดน้ำ",
+  ];
+
+  function uid() {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    return "i_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 9);
+  }
+
+  function makeItem(text) {
+    return { id: uid(), text, checked: false, image: null };
+  }
+
+  function defaultDayItems(dayIndex) {
+    const texts = [...BASE_ITEMS];
+    if (dayIndex === 1) texts.push("ชุดว่ายน้ำ");
+    if (dayIndex === 2) texts.push("หมวกลูกเสือ");
+    return texts.map(makeItem);
+  }
+
+  function defaultState() {
+    return {
+      version: 1,
+      days: [0, 1, 2, 3, 4].map((i) => ({ items: defaultDayItems(i) })),
+    };
+  }
+
+  function validateState(parsed) {
+    if (!parsed || !Array.isArray(parsed.days) || parsed.days.length !== 5) {
+      return null;
+    }
+    for (let d = 0; d < 5; d++) {
+      const day = parsed.days[d];
+      if (!day || !Array.isArray(day.items)) return null;
+      for (const it of day.items) {
+        if (!it || typeof it.text !== "string" || typeof it.checked !== "boolean") {
+          return null;
+        }
+        if (it.image != null && typeof it.image !== "string") it.image = null;
+        if (!it.id) it.id = uid();
+      }
+    }
+    return parsed;
+  }
+
+  function initState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      const s = defaultState();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+      } catch (_) {}
+      return s;
+    }
+    try {
+      const parsed = JSON.parse(raw);
+      const ok = validateState(parsed);
+      if (ok) return ok;
+    } catch (_) {}
+    const s = defaultState();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+    } catch (_) {}
+    return s;
+  }
+
+  let state = initState();
+  let currentDay = 0;
+  let saveTimer = null;
+  let modalMode = "add";
+  let editingItemId = null;
+  let pendingImageData = null;
+
+  const els = {
+    tabs: document.querySelectorAll(".day-tab"),
+    panelTitle: document.getElementById("panelDayTitle"),
+    checklist: document.getElementById("checklist"),
+    btnReset: document.getElementById("btnReset"),
+    btnAdd: document.getElementById("btnAdd"),
+    progressText: document.getElementById("progressText"),
+    progressPct: document.getElementById("progressPct"),
+    progressBar: document.getElementById("progressBar"),
+    progressFill: document.getElementById("progressFill"),
+    saveHint: document.getElementById("saveHint"),
+    modal: document.getElementById("itemModal"),
+    modalTitle: document.getElementById("modalTitle"),
+    modalText: document.getElementById("modalText"),
+    modalImage: document.getElementById("modalImage"),
+    modalPreview: document.getElementById("modalPreview"),
+    modalPreviewImg: document.getElementById("modalPreviewImg"),
+    btnRemoveImage: document.getElementById("btnRemoveImage"),
+    modalSave: document.getElementById("modalSave"),
+  };
+
+  function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      saveTimer = null;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        flashSaveHint();
+      } catch (e) {
+        els.saveHint.textContent = "บันทึกไม่สำเร็จ — รูปอาจใหญ่เกินไป ลองลดขนาดรูป";
+        els.saveHint.classList.add("is-pulse");
+        setTimeout(() => {
+          els.saveHint.textContent = "บันทึกแล้ว";
+          els.saveHint.classList.remove("is-pulse");
+        }, 4000);
+        console.error(e);
+      }
+    }, SAVE_DEBOUNCE_MS);
+  }
+
+  function flashSaveHint() {
+    els.saveHint.textContent = "บันทึกแล้ว";
+    els.saveHint.classList.remove("is-pulse");
+    void els.saveHint.offsetWidth;
+    els.saveHint.classList.add("is-pulse");
+  }
+
+  function getDay() {
+    return state.days[currentDay];
+  }
+
+  function updateProgress() {
+    const items = getDay().items;
+    const total = items.length;
+    const done = items.filter((i) => i.checked).length;
+    let pct = 0;
+    if (total > 0) pct = Math.round((done / total) * 100);
+
+    els.progressPct.textContent = pct + "%";
+    els.progressFill.style.width = pct + "%";
+    els.progressBar.setAttribute("aria-valuenow", String(pct));
+
+    if (total === 0) {
+      els.progressText.textContent = "ยังไม่มีรายการ — กดเพิ่มรายการ";
+    } else if (pct === 100) {
+      els.progressText.textContent = "เก่งมาก! ครบทุกอย่างแล้ว พร้อมไปโรงเรียน";
+    } else {
+      els.progressText.textContent = "ติ๊กแล้ว " + done + " จาก " + total + " รายการ";
+    }
+  }
+
+  const EMOJI_HINTS = [
+    ["เงิน", "💵"],
+    ["แมส", "😷"],
+    ["น้ำ", "💧"],
+    ["ขนม", "🍪"],
+    ["ดินสอ", "✏️"],
+    ["สี", "🎨"],
+    ["หนังสือ", "📚"],
+    ["ขวดน้ำ", "🥤"],
+    ["ชุดว่ายน้ำ", "🩱"],
+    ["หมวกลูกเสือ", "🧢"],
+  ];
+
+  function emojiForText(text) {
+    const t = (text || "").trim();
+    if (!t) return "📋";
+    for (const [key, em] of EMOJI_HINTS) {
+      if (t.includes(key)) return em;
+    }
+    return "📌";
+  }
+
+  function renderChecklist() {
+    const items = getDay().items;
+    els.checklist.innerHTML = "";
+
+    if (items.length === 0) {
+      const li = document.createElement("li");
+      li.className = "empty-state";
+      li.textContent = "ยังไม่มีรายการ — กดปุ่ม “+ เพิ่มรายการ”";
+      els.checklist.appendChild(li);
+      updateProgress();
+      return;
+    }
+
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      li.className = "check-item" + (item.checked ? " is-done" : "");
+
+      const tap = document.createElement("div");
+      tap.className = "check-tap";
+
+      const cbId = "cb-" + item.id;
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.className = "check-input";
+      cb.id = cbId;
+      cb.checked = item.checked;
+      cb.addEventListener("change", () => {
+        item.checked = cb.checked;
+        scheduleSave();
+        renderChecklist();
+      });
+      tap.appendChild(cb);
+
+      const thumbFrame = document.createElement("div");
+      thumbFrame.className = "thumb-wrap";
+
+      let thumb;
+      if (item.image) {
+        thumb = document.createElement("img");
+        thumb.className = "check-item-thumb";
+        thumb.src = item.image;
+        thumb.alt = "";
+        thumb.loading = "lazy";
+      } else {
+        thumb = document.createElement("div");
+        thumb.className = "check-item-thumb placeholder";
+        thumb.setAttribute("aria-hidden", "true");
+        thumb.textContent = emojiForText(item.text);
+      }
+      thumbFrame.appendChild(thumb);
+
+      const body = document.createElement("div");
+      body.className = "check-body";
+
+      const textLabel = document.createElement("label");
+      textLabel.className = "check-text-label";
+      textLabel.setAttribute("for", cbId);
+
+      const span = document.createElement("span");
+      span.className = "check-text" + (item.checked ? " is-checked" : "");
+      span.textContent = item.text;
+      textLabel.appendChild(span);
+
+      const actions = document.createElement("div");
+      actions.className = "check-actions";
+
+      const btnEdit = document.createElement("button");
+      btnEdit.type = "button";
+      btnEdit.className = "btn btn-ghost btn-icon";
+      btnEdit.setAttribute("aria-label", "แก้ไข " + item.text);
+      btnEdit.textContent = "✎";
+      btnEdit.addEventListener("click", () => openModalEdit(item.id));
+
+      const btnDel = document.createElement("button");
+      btnDel.type = "button";
+      btnDel.className = "btn btn-ghost btn-icon";
+      btnDel.setAttribute("aria-label", "ลบ " + item.text);
+      btnDel.textContent = "🗑";
+      btnDel.addEventListener("click", () => {
+        if (confirm("ลบรายการ “" + item.text + "” ?")) {
+          getDay().items = getDay().items.filter((x) => x.id !== item.id);
+          scheduleSave();
+          renderChecklist();
+        }
+      });
+
+      actions.appendChild(btnEdit);
+      actions.appendChild(btnDel);
+
+      body.appendChild(textLabel);
+      body.appendChild(actions);
+
+      li.appendChild(tap);
+      li.appendChild(thumbFrame);
+      li.appendChild(body);
+      els.checklist.appendChild(li);
+    });
+
+    updateProgress();
+  }
+
+  function setDay(dayIndex) {
+    currentDay = dayIndex;
+    els.tabs.forEach((tab, i) => {
+      const on = i === dayIndex;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    els.panelTitle.textContent = DAY_LABELS[dayIndex];
+    renderChecklist();
+  }
+
+  els.tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const d = parseInt(tab.getAttribute("data-day"), 10);
+      if (!Number.isNaN(d)) setDay(d);
+    });
+  });
+
+  els.btnReset.addEventListener("click", () => {
+    const n = getDay().items.filter((i) => i.checked).length;
+    if (n === 0) return;
+    if (!confirm("ยกเลิกการติ๊กทุกรายการของวันนี้?")) return;
+    getDay().items.forEach((i) => {
+      i.checked = false;
+    });
+    scheduleSave();
+    renderChecklist();
+  });
+
+  els.btnAdd.addEventListener("click", () => openModalAdd());
+
+  function openModalAdd() {
+    modalMode = "add";
+    editingItemId = null;
+    pendingImageData = null;
+    els.modalTitle.textContent = "เพิ่มรายการ";
+    els.modalText.value = "";
+    els.modalImage.value = "";
+    els.modalPreview.hidden = true;
+    els.modal.removeAttribute("hidden");
+    els.modalText.focus();
+  }
+
+  function openModalEdit(itemId) {
+    const item = getDay().items.find((x) => x.id === itemId);
+    if (!item) return;
+    modalMode = "edit";
+    editingItemId = itemId;
+    pendingImageData = null;
+    els.modalTitle.textContent = "แก้ไขรายการ";
+    els.modalText.value = item.text;
+    els.modalImage.value = "";
+    if (item.image) {
+      els.modalPreview.hidden = false;
+      els.modalPreviewImg.src = item.image;
+    } else {
+      els.modalPreview.hidden = true;
+      els.modalPreviewImg.removeAttribute("src");
+    }
+    els.modal.removeAttribute("hidden");
+    els.modalText.focus();
+  }
+
+  function closeModal() {
+    els.modal.setAttribute("hidden", "");
+    pendingImageData = null;
+    els.modalImage.value = "";
+  }
+
+  document.querySelectorAll("[data-close-modal]").forEach((el) => {
+    el.addEventListener("click", closeModal);
+  });
+
+  function compressDataUrl(dataUrl, maxSide, quality) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.naturalWidth;
+        let h = img.naturalHeight;
+        if (w <= 0 || h <= 0) {
+          resolve(dataUrl);
+          return;
+        }
+        const scale = Math.min(1, maxSide / Math.max(w, h));
+        w = Math.round(w * scale);
+        h = Math.round(h * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(dataUrl);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, w, h);
+        try {
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      img.onerror = () => reject(new Error("image load failed"));
+      img.src = dataUrl;
+    });
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result));
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(file);
+    });
+  }
+
+  els.modalImage.addEventListener("change", async () => {
+    const file = els.modalImage.files && els.modalImage.files[0];
+    if (!file || !file.type.startsWith("image/")) return;
+    try {
+      const raw = await readFileAsDataUrl(file);
+      pendingImageData = await compressDataUrl(raw, 560, 0.82);
+      els.modalPreview.hidden = false;
+      els.modalPreviewImg.src = pendingImageData;
+    } catch {
+      pendingImageData = null;
+    }
+  });
+
+  els.btnRemoveImage.addEventListener("click", () => {
+    pendingImageData = "";
+    els.modalImage.value = "";
+    els.modalPreview.hidden = true;
+    els.modalPreviewImg.removeAttribute("src");
+  });
+
+  els.modalSave.addEventListener("click", () => {
+    const text = els.modalText.value.trim();
+    if (!text) {
+      alert("กรุณาใส่ชื่อรายการ");
+      return;
+    }
+
+    if (modalMode === "add") {
+      const newItem = makeItem(text);
+      if (pendingImageData && pendingImageData.length > 0) {
+        newItem.image = pendingImageData;
+      }
+      getDay().items.push(newItem);
+    } else if (modalMode === "edit" && editingItemId) {
+      const item = getDay().items.find((x) => x.id === editingItemId);
+      if (item) {
+        item.text = text;
+        if (pendingImageData === "") {
+          item.image = null;
+        } else if (pendingImageData && pendingImageData.length > 0) {
+          item.image = pendingImageData;
+        }
+      }
+    }
+
+    scheduleSave();
+    closeModal();
+    renderChecklist();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !els.modal.hasAttribute("hidden")) {
+      closeModal();
+    }
+  });
+
+  setDay(0);
+})();
+  </script>
+</body>
+</html>
