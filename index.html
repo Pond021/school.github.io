@@ -44,11 +44,15 @@
 html {
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: var(--font);
   font-size: 18px;
   font-weight: 500;
@@ -65,7 +69,8 @@ body {
 }
 
 .app {
-  max-width: 720px;
+  width: 100%;
+  max-width: min(720px, 100%);
   margin: 0 auto;
   padding: max(0.75rem, env(safe-area-inset-top, 0px)) max(1rem, env(safe-area-inset-right, 0px))
     calc(1rem + var(--safe-bottom)) max(1rem, env(safe-area-inset-left, 0px));
@@ -73,6 +78,8 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .header {
@@ -111,27 +118,36 @@ body {
 
 .day-tabs {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 0.25rem 0 0.75rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+  box-sizing: border-box;
 }
 
 .day-tab {
-  flex: 1 0 auto;
-  min-width: 4.5rem;
-  padding: 0.7rem 0.9rem;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0.62rem 0.3rem;
   border: 3px solid rgba(255, 255, 255, 0.85);
   border-radius: 999px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.78rem, 2.85vw, 0.95rem);
   font-weight: 700;
   color: var(--text-muted);
   background: rgba(255, 255, 255, 0.72);
   cursor: pointer;
   transition: transform 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 0 rgba(232, 72, 154, 0.12);
+  text-align: center;
+  line-height: 1.15;
+  scroll-snap-align: center;
+  box-sizing: border-box;
 }
 
 .day-tab:hover {
@@ -150,8 +166,11 @@ body {
 .main {
   flex: 1;
   min-height: 0;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .panel {
@@ -163,8 +182,13 @@ body {
   backdrop-filter: blur(10px);
   flex: 1;
   min-height: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .panel-head {
@@ -262,6 +286,10 @@ body {
 .progress-block {
   flex-shrink: 0;
   margin-bottom: 0.85rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .progress-label {
@@ -275,10 +303,11 @@ body {
 .progress-track {
   position: relative;
   height: 30px;
+  max-width: 100%;
   border-radius: 999px;
   background: var(--lilac);
   border: 4px solid #fff;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: inset 0 2px 8px rgba(155, 127, 216, 0.22);
 }
 
@@ -304,8 +333,9 @@ body {
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: 0.15rem;
-  padding: 0.15rem 0.35rem;
+  gap: 0.1rem;
+  padding: 0.1rem 0.28rem;
+  max-width: min(100%, 5.5rem);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid var(--pink-300);
@@ -313,6 +343,7 @@ body {
   white-space: nowrap;
   transition: left 0.4s cubic-bezier(0.34, 1.2, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
   pointer-events: none;
+  box-sizing: border-box;
 }
 
 .progress-star {
@@ -477,9 +508,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: max(0.5rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-right, 0px))
     max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
-  box-sizing: border-box;
 }
 
 .modal-backdrop {
@@ -492,6 +526,7 @@ body {
 .modal-card {
   position: relative;
   width: 100%;
+  min-width: 0;
   max-width: min(400px, 100%);
   max-height: min(88dvh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 1.25rem));
   overflow-x: hidden;
@@ -501,9 +536,11 @@ body {
   background: linear-gradient(180deg, #fff 0%, var(--pink-50) 100%);
   border-radius: var(--radius);
   border: 4px solid #fff;
-  padding: 1.1rem 1.2rem 1.25rem;
+  padding: 1.1rem 1.15rem 1.25rem;
   box-shadow: 0 24px 64px rgba(194, 24, 110, 0.28);
   animation: slideUp 0.25s ease;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 @keyframes slideUp {
@@ -601,7 +638,7 @@ body {
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .app {
-    max-width: min(820px, 94vw);
+    max-width: min(820px, 100%);
   }
 
   .panel {
@@ -1040,6 +1077,22 @@ body {
     });
     els.panelTitle.textContent = DAY_LABELS[dayIndex];
     renderChecklist();
+    const activeTab = els.tabs[dayIndex];
+    if (activeTab && typeof activeTab.scrollIntoView === "function") {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          try {
+            activeTab.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+              inline: "center",
+            });
+          } catch (_) {
+            activeTab.scrollIntoView();
+          }
+        });
+      });
+    }
   }
 
   els.tabs.forEach((tab) => {
